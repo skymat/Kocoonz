@@ -55,6 +55,22 @@ app.get('/home', function (req, res) {
     home(req,res);
 });
 
+app.get('/hote', function (req, res) {
+    res.render('hote', {});
+});
+
+app.get('/login', function (req, res) {
+    res.render('login', {});
+});
+
+app.get('/register', function (req, res) {
+    res.render('register', {});
+});
+
+app.get('/find', function (req, res) {
+    res.render('find', {});
+});
+
 /////TRELLO
    // var t = new Trello("c25f219ff44b0d3f8935d648f58b92d3", "9c05ec27d1c3c19e9ad620af87b9d8d61ec75dd06c80b6f6179a73e748ddfc2f");
 
