@@ -44,6 +44,7 @@ function home(req,res){
     var renderPage = function () {
         res.render('home', {});
     }
+    renderPage();
 }
 
 app.get('/', function (req, res) {
