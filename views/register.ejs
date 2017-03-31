@@ -16,6 +16,7 @@
 
     <!-- Custom CSS -->
     <link href="css/stylish-portfolio.css" rel="stylesheet">
+    <link href="css/mystyles.css" rel="stylesheet">
 
     <!-- Custom Fonts -->
     <link href="font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
@@ -65,17 +66,17 @@
               <form>
                 <div class="row">
                     <div class="col-xs-offset-2 col-xs-3">
-                      <input type="text" class="form-control" placeholder="email">
+                      <input type="text" class="form-control" name="email" placeholder="email">
                     </div>
                     <div class="col-xs-3">
-                      <input type="text" class="form-control" placeholder="mot de passe">
+                      <input type="text" class="form-control" name="password" placeholder="mot de passe">
                     </div>
                     <div class="col-xs-2">
                       <input type="submit" class="btn btn-dark" value="Valider">
                     </div>
                  </div>
              </form>
-             
+             <div class="message-to-user" id="message"><%=message%></div>
         </div>
     </section>
 
@@ -122,7 +123,7 @@
 
     <!-- Custom Theme JavaScript -->
     <script src="js/script.js"></script>
-
+    <script src="js/myscripts.js"></script>
 </body>
 
 </html>

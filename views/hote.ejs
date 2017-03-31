@@ -16,6 +16,7 @@
 
     <!-- Custom CSS -->
     <link href="css/stylish-portfolio.css" rel="stylesheet">
+    <link href="css/mystyles.css" rel="stylesheet">
 
     <!-- Custom Fonts -->
     <link href="font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
@@ -64,37 +65,37 @@
               
               <div class="row">
              <div class="col-xs-offset-2 col-xs-8">
-              <form class="form-horizontal">
+              <form class="form-horizontal" method="POST" action="/add" encType="multipart/form-data">
                 <div class="form-group">
                   <label for="titre" class="col-sm-2 control-label">Titre</label>
                   <div class="col-sm-10">
-                    <input type="text" class="form-control" id="titre" placeholder="titre">
+                    <input type="text" class="form-control" id="titre" name="titre" placeholder="titre">
                   </div>
                 </div>
                 <div class="form-group">
                   <label for="description" class="col-sm-2 control-label">Description</label>
                   <div class="col-sm-10">
-                    <input type="text" class="form-control" id="description" placeholder="description">
+                    <input type="text" class="form-control" id="description" name="description" placeholder="description">
                   </div>
                 </div>
                 <div class="form-group">
                   <label for="ville" class="col-sm-2 control-label">Ville</label>
                   <div class="col-sm-10">
-                    <input type="text" class="form-control" id="ville" placeholder="ville">
+                    <input type="text" class="form-control" id="ville" name="ville" placeholder="ville">
                   </div>
                 </div>
                 
                 <div class="form-group">
                   <label for="datebegin" class="col-sm-2 control-label">Date début</label>
                   <div class="col-sm-10">
-                    <input type="text" class="form-control" id="datebegin" placeholder="Date début">
+                    <input type="date" class="form-control" id="datebegin" name="date_debut" placeholder="Date début">
                   </div>
                 </div>
                 
                 <div class="form-group">
                   <label for="dateend" class="col-sm-2 control-label">Date de fin</label>
                   <div class="col-sm-10">
-                    <input type="text" class="form-control" id="dateend" placeholder="Date de fin">
+                    <input type="date" class="form-control" id="dateend" name="date_fin" placeholder="Date de fin">
                   </div>
                 </div>
                 
@@ -102,14 +103,14 @@
                 <div class="form-group">
                   <label for="prix" class="col-sm-2 control-label">Prix</label>
                   <div class="col-sm-10">
-                    <input type="text" class="form-control" id="prix" placeholder="prix">
+                    <input type="number" class="form-control" id="prix" name="prix" placeholder="prix">
                   </div>
                 </div>
                 
                 <div class="form-group">
                   <label for="photo" class="col-sm-2 control-label">Photo</label>
                   <div class="col-sm-10">
-                    <input type="file" id="photo" placeholder="photo">
+                    <input type="file" id="photo" name="photo" placeholder="photo">
                   </div>
                 </div>
                 
@@ -119,7 +120,7 @@
                   </div>
                 </div>
               </form>
-             
+             <div class="message-to-user" id="message"><%=message%></div>
         </div>
     </section>
 
@@ -166,6 +167,7 @@
 
     <!-- Custom Theme JavaScript -->
     <script src="js/script.js"></script>
+    <script src="js/myscripts.js"></script>
 
 </body>
 
