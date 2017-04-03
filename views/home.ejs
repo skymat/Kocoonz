@@ -29,24 +29,8 @@
 <body>
 
     <!-- Navigation -->
-    <a id="menu-toggle" href="#" class="btn btn-dark btn-lg toggle"><i class="fa fa-bars"></i></a>
-    <nav id="sidebar-wrapper">
-        <ul class="sidebar-nav">
-            <a id="menu-close" href="#" class="btn btn-light btn-lg pull-right toggle"><i class="fa fa-times"></i></a>
-            <li>
-                <a href="./">Home</a>
-            </li>
-            <li>
-                <a href="./hote">Proposer son logement</a>
-            </li>
-            <li>
-                <a href="/login">Login</a>
-            </li>
-            <li>
-                <a href="/register">S'enregistrer</a>
-            </li>
-        </ul>
-    </nav>
+    <%- include('nav'); %>
+
 
     <!-- Header -->
     <header id="top" class="header">
@@ -55,16 +39,16 @@
             <h3>Chez vous partout !</h3>
             <br>
             <div class="container">
-              <form>
+              <form method="GET" action="/find">
                 <div class="row">
                     <div class="col-xs-offset-1 col-xs-4">
-                      <input type="text" class="form-control" placeholder="Destination">
+                      <input type="text" class="form-control" name="destination" placeholder="Destination">
                     </div>
                     <div class="col-xs-2">
-                      <input type="text" class="form-control" placeholder="date de début">
+                      <input type="date" class="form-control" name="date_debut" placeholder="date de début">
                     </div>
                     <div class="col-xs-2">
-                      <input type="text" class="form-control" placeholder="date de fin">
+                      <input type="date" class="form-control" name="date_fin" placeholder="date de fin">
                     </div>
                     <div class="col-xs-2">
                       <input type="submit" class="btn btn-dark" value="Rechercher">

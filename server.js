@@ -22,7 +22,6 @@ var bodyParser = require('body-parser');
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json()); // this is used for parsing the JSON object from POST
 
-
 //Initialisation de la sessionapp.use(
 app.use(
  session({ 
@@ -74,6 +73,7 @@ app.get('/home', function (req, res) {
 
 app.get('/find', function (req, res) {
     var message = "";
+    var apparts = [];
     var  where = [];
     if (req.query.date_debut)
         where.push({'appart.date_debut' :{'$lte': req.query.date_debut}});
@@ -81,13 +81,26 @@ app.get('/find', function (req, res) {
         where.push({'appart.date_fin' :{'$gte': req.query.date_fin}});
     if (req.query.destination)
         where.push({'appart.ville' :req.query.destination.toLowerCase()});
-    console.log(where);
     var query = UserModel.find();
     if (where.length > 0)
         query.and(where);
     query.exec(function (err, results) {
-          console.log(results);
-          res.render('find', {message,users : results});
+        var nbap = 0;
+        results.forEach(function(element) {
+            element.appart.forEach(function(appart) {
+                if (req.query.destination ? appart.ville == req.query.destination.toLowerCase() : true){
+                    if(req.query.date_debut ? appart.date_debut <= new Date(req.query.date_debut) : true){
+                        if (req.query.date_fin ? appart.date_fin >= new Date(req.query.date_fin) : true){
+                            console.log(appart);
+                            apparts.push(appart);
+                        nbap++;
+                        }
+                    }
+                }
+            }, this);
+        }, this);
+        console.log(nbap);
+          res.render('find', {message,apparts});
       });
 });
 
@@ -109,33 +122,33 @@ app.post('/add', function (req, res) {
         console.log (req.body.photo);
         console.log(req.files);
 
-        if (req.body && req.body.titre && req.body.description && req.body.ville && req.body.date_debut && req.body.prix && req.files){
+        if (req.body && req.body.titre && req.body.description && req.body.ville && req.body.date_debut && req.body.prix && req.files && req.files.photo){
 
 
             // The name of the input field (i.e. "photo") is used to retrieve the uploaded file 
             let photo = req.files.photo;
             console.log(photo);
-            var path = FileDirectory + req.session.user._id;
-            fs.ensureDir(path, err => {
-                console.log(err);
-                // Use the mv() method to place the file somewhere on your server 
-                photo.mv(path+"/"+photo.name, function(err) {
-                    if (err)
-                        return res.status(500).send(err);
-                });
-            })
 
             UserModel.findById(req.session.user._id, function (err, user) {
                 if (err){
-                    message = "Une erreur est survenue, l'appartement n'a pas été enregistré";
+                    message = "Une erreur est survenue, l'appartement n'a pas été enregistré.";
+                    console.log(err);
                 }
                 else{
+                    if (!req.body.date_fin)
+                    {
+                        dfin = new Date("2020-12-31");
+                    }
+                    else
+                    {
+                        dfin = new Date(req.body.date_fin);
+                    }
                     var appart = {
                         titre : req.body.titre,
                         description : req.body.description,
                         ville : req.body.ville.toLowerCase(),
                         date_debut : new Date(req.body.date_debut),
-                        date_fin : req.body.date_fin != null ? new Date(req.body.date_fin) : new Date(2020, 12, 31),
+                        date_fin : dfin,
                         prix : req.body.prix,
                         photo_name : photo.name
                     } 
@@ -144,11 +157,32 @@ app.post('/add', function (req, res) {
                         if (error)
                         {
                             message = "Une erreur est survenue, votre appartement n'a pas été ajouté.";
+                            console.log(user);
+                            console.log(error);
                             res.render('hote', {message});
                         }
                         else{
-                            message = "Votre appartement a bien été enregistré. Il est désormais disponible à la location.";
-                            res.render('hote', {message});
+                                var appartID = null;
+                                user.appart.forEach(function(element) {
+                                    if (element.photo_name == photo.name && element.ville == req.body.ville.toLowerCase() && element.prix == req.body.prix)
+                                        appartID = element._id;
+                                }, this);
+                                if (!appartID){
+                                    console.log("ERREUR, Pas d'Appart _ID");
+                                }
+                                var path = FileDirectory + appartID;
+                                console.log(appartID);
+                                fs.ensureDir(path, err => {
+                                    console.log(err);
+                                    // Use the mv() method to place the file somewhere on your server 
+                                    photo.mv(path+"/"+photo.name, function(err) {
+                                        if (err)
+                                            return res.status(500).send(err);
+                                    });
+                                })
+
+                                message = "Votre appartement a bien été enregistré. Il est désormais disponible à la location.";
+                                res.render('hote', {message});
                         }
                     });
                     }
