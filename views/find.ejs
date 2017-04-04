@@ -62,8 +62,13 @@
       <section id="about" style="background-color: #FFFFFF">
           <div class="container">
              <div class="row">
-                <div class="col-xs-6">
+                <div class="col-xs-8">
                   <h3><%= total %> locations</h3>
+                </div>
+                <div class="col-xs-4">
+                    <div class="mapinvisible">Carte non disponible</div>
+                    <div id="mapid">  
+                    </div>
                 </div>
               </div>
           </div>
@@ -82,12 +87,13 @@
                     for (var i = 0; i < apparts.length; i++){	
                       total ++;							
                   %>
-                    <div class="col-xs-4">
+                    <div class="col-xs-4 result" id="<%= apparts[i]._id%>" >
                       <div class="thumbnail">
                         <img class="img-responsive" src="<%= "static/"+apparts[i]._id+"/"+apparts[i].photo_name%>">
                         <div class="caption">
                           <h5><%= apparts[i].titre%></h5>
                           <p><span> <%= apparts[i].prix%>€ - </span> <%= apparts[i].description%></p>
+                          <div class="localisation"><%= apparts[i].adresse%>, <%= apparts[i].ville%></div>
                           <div class="text-center"><a href="#" class="btn btn-dark" role="button">Reserver</a></div>
                         </div>
                       </div>
@@ -100,9 +106,7 @@
               </div>
               <!-- /.row -->
               <div class="col-xs-4">
-                <div id="mapid" style="width: 250px; height:350px; position:fixed;">  
-                 
-                </div>
+
               </div>
             </div>
         </div>

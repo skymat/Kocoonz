@@ -1,3 +1,19 @@
 .message-to-user{
     color:yellow;
 }
+
+.mapinvisible{
+    color: red;
+    position:absolute; 
+    top:60px; 
+    left:50px;
+}
+
+#mapid{
+    width: 250px; 
+    height:350px; 
+    position:absolute; 
+    top:50px; 
+    left:50px;
+    display: inline-block;
+}

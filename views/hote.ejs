@@ -22,7 +22,10 @@
     <link href="font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
     <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,700,300italic,400italic,700italic" rel="stylesheet" type="text/css">
 
- 
+     <script src="https://unpkg.com/leaflet@1.0.3/dist/leaflet.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.3/dist/leaflet.css" />
+
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 
 </head> <!-- Header -->
 
@@ -61,10 +64,17 @@
                     <input type="text" class="form-control" id="description" name="description" placeholder="description">
                   </div>
                 </div>
-                <div class="form-group">
+                <div class="form-group ui-widget">
                   <label for="ville" class="col-sm-2 control-label">Ville</label>
-                  <div class="col-sm-10">
+                  <div class="col-sm-10 ui-widget">
                     <input type="text" class="form-control" id="ville" name="ville" placeholder="ville">
+                  </div>
+                </div>
+
+                <div class="form-group ui-widget">
+                  <label for="ville" class="col-sm-2 control-label">Adresse</label>
+                  <div class="col-sm-10 ui-widget">
+                    <input type="text" class="form-control" id="adresse" name="adresse" placeholder="adresse">
                   </div>
                 </div>
                 
@@ -144,6 +154,7 @@
 
     <!-- jQuery -->
     <script src="js/jquery.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
     <!-- Bootstrap Core JavaScript -->
     <script src="js/bootstrap.min.js"></script>

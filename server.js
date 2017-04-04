@@ -40,6 +40,7 @@ var appartSchema = mongoose.Schema({
     titre: String,
     description: String,
     ville: String,
+    adresse : String,
     date_debut: Date,
     date_fin:Date,
     prix:Number,
@@ -71,6 +72,53 @@ app.get('/home', function (req, res) {
     home(req,res);
 });
 
+app.post('/autocomplete', function (req, res) {
+    if (req.body){
+        var search = req.body.ville + req.body.adresse;
+        var url = "http://free.gisgraphy.com/fulltext/search?q="+search+"&allwordsrequired=false&radius=10000&suggest=true&style=MEDIUM&country=FR&lang=fr&format=JSON&from=1&to=10&indent=false";
+        request(url, function(error, response, body) {
+            if (error || response.statusCode != "200"){
+                console.log(response.statusCode);
+                console.log(error);
+                res.send(null);
+            }
+            else if (body){
+                body = JSON.parse(body);
+                if(body.response && body.response.docs) {
+                    var proposed = [];
+                    var max = body.response.docs.length >= 10 ? 10 : body.response.docs.length;
+                    for (var i = 0; i < max; i++) {
+                        var element = body.response.docs[i];
+                        proposed.push(element.name);
+                    }
+                    res.send(proposed);
+                }
+            }
+        });
+    }
+});
+
+
+app.post('/coord', function (req, res) {
+    if (req.body){
+    var url = "http://free.gisgraphy.com/geocoding/geocode?address="+req.body.adresse+"&country=fr&format=JSON&from=1&to=10&indent=false";
+    request(url, function(error, response, body) {
+        if (error || response.statusCode != "200"){
+            console.log(response.statusCode);
+            console.log(error);
+            res.send(null);
+        }
+        else if (body){
+            body = JSON.parse(body);
+            if(body.result && body.result[0]) {
+                var coord = {lat : body.result[0].lat,lon : body.result[0].lng}
+                res.send(coord);
+            }
+        }
+     });
+    }
+});
+
 app.get('/find', function (req, res) {
     var message = "";
     var apparts = [];
@@ -91,7 +139,6 @@ app.get('/find', function (req, res) {
                 if (req.query.destination ? appart.ville == req.query.destination.toLowerCase() : true){
                     if(req.query.date_debut ? appart.date_debut <= new Date(req.query.date_debut) : true){
                         if (req.query.date_fin ? appart.date_fin >= new Date(req.query.date_fin) : true){
-                            console.log(appart);
                             apparts.push(appart);
                         nbap++;
                         }
@@ -99,7 +146,6 @@ app.get('/find', function (req, res) {
                 }
             }, this);
         }, this);
-        console.log(nbap);
           res.render('find', {message,apparts});
       });
 });
@@ -119,15 +165,12 @@ app.post('/add', function (req, res) {
         if (!req.files){
             message = "Aucune photo uploadée."
         }
-        console.log (req.body.photo);
-        console.log(req.files);
 
-        if (req.body && req.body.titre && req.body.description && req.body.ville && req.body.date_debut && req.body.prix && req.files && req.files.photo){
+        if (req.body && req.body.titre && req.body.description && req.body.ville && req.body.adresse && req.body.date_debut && req.body.prix && req.files && req.files.photo){
 
 
             // The name of the input field (i.e. "photo") is used to retrieve the uploaded file 
             let photo = req.files.photo;
-            console.log(photo);
 
             UserModel.findById(req.session.user._id, function (err, user) {
                 if (err){
@@ -147,6 +190,7 @@ app.post('/add', function (req, res) {
                         titre : req.body.titre,
                         description : req.body.description,
                         ville : req.body.ville.toLowerCase(),
+                        adresse : req.body.adresse,
                         date_debut : new Date(req.body.date_debut),
                         date_fin : dfin,
                         prix : req.body.prix,
@@ -171,7 +215,6 @@ app.post('/add', function (req, res) {
                                     console.log("ERREUR, Pas d'Appart _ID");
                                 }
                                 var path = FileDirectory + appartID;
-                                console.log(appartID);
                                 fs.ensureDir(path, err => {
                                     console.log(err);
                                     // Use the mv() method to place the file somewhere on your server 
