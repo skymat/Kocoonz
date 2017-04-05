@@ -1,8 +1,17 @@
 $("document").ready(function() {
 
-
- 
- $("#adressex").keydown(function(event){ 
+                     function doautocomplete(donnee){
+                        console.log("autocomplete call");                            
+                        console.log(donnee);
+                        if(donnee){
+                                $.map(donnee, function(objet){
+                                    return objet; // on retourne cette forme de suggestion
+                                });
+                        }
+                    }
+/*
+//Avec du Jsonp vers l'api gisgraphy, mais ne renvoit rien, incompréhensible, leur api a peut être un pb, ou alors c'est mon code
+ $("#adresse-ko").keydown(function(event){ 
 
         if($(this).val() != undefined)
         {
@@ -11,19 +20,28 @@ $("document").ready(function() {
                 var ville = "";
                 if ($("#ville").val())
                     ville = $("#ville").val()+",";
-                console.log(ville);
-                  $.post("/autocomplete",{ville,adresse : $(this).val()}, function( data ) {
-                    if(data) {
-                        console.log(data);
-                    }
-                  });
-            }
-            else{
+                var adresse = $("#adresse").val();
+                $(this).autocomplete({
+                    source : function(requete, reponse){ // les deux arguments représentent les données nécessaires au plugin
 
+
+         //           $.getJSON("http://free.gisgraphy.com/fulltext/search?q="+adresse+"&allwordsrequired=false&radius=10000&suggest=true&style=MEDIUM&country=FR&lang=fr&from=1&to=10&indent=false&callback=?",function(json){
+        //            console.log(json);
+        //            });
+
+                    $.ajax({
+                            url : "http://free.gisgraphy.com/fulltext/search?q="+adresse+"&allwordsrequired=false&radius=10000&suggest=true&style=MEDIUM&country=FR&lang=fr&from=1&to=10&indent=false",
+                            dataType : 'jsonp', // on spécifie bien que le type de données est en JSONP
+                            //jsonp : false,
+                            jsonpCallback : "doautocomplete"
+                        });
+                    }
+                });
             }
         }
     
 });
+*/
 
 $("#adresse").keydown(function(event){ 
 
@@ -31,6 +49,9 @@ $("#adresse").keydown(function(event){
         {
             if ($(this).val().length > 1)
             {
+                var ville = "";
+                if ($("#ville").val())
+                    ville = $("#ville").val()+",";
                 $(this).autocomplete({
                     source : function(requete, reponse){ // les deux arguments représentent les données nécessaires au plugin
                     $.ajax({
@@ -50,20 +71,6 @@ $("#adresse").keydown(function(event){
                         });
                     }
                 });
-
-
-                var ville = "";
-                if ($("#ville").val())
-                    ville = $("#ville").val()+",";
-                console.log(ville);
-                  $.post("/autocomplete",{ville,adresse : $(this).val()}, function( data ) {
-                    if(data) {
-                        console.log(data);
-                    }
-                  });
-            }
-            else{
-
             }
         }
     
@@ -100,7 +107,9 @@ $("#ville").keydown(function(event){
         }
 });
 
-$("#villex").keydown(function(event){ 
+/*
+//Ajax vers server qui renvoit, mais pas optimal
+$("#ville").keydown(function(event){ 
 
         if($(this).val() != undefined)
         {
@@ -125,7 +134,7 @@ $("#villex").keydown(function(event){
         }
     
 });
-
+/*
 
     
     
